@@ -1,0 +1,169 @@
+\documentclass[12pt]{article}
+
+\usepackage{url,verbatim, amsmath, amssymb, amsfonts, dsfont, color}
+\textwidth 15true cm
+\textheight 9true in
+\oddsidemargin 0.30true in
+\evensidemargin 0.30true in
+\topmargin -0.3true in
+\headsep 0.4true in
+
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\def\dotsim{\stackrel{.}{\sim}}
+\def\goesd{\stackrel{d}{\rightarrow}}
+\def\goesp{\stackrel{p}{\rightarrow}}
+\def\goeslaw{\stackrel{{\cal L}}{\longrightarrow}}
+%
+\def\vp{{\varphi}}
+\def\E{{\rm E}}
+\def\Pvalue{{$p$-value}}
+\def\Pvalues{{$p$-values}}
+\def\pr{{\rm pr}}
+\def\Pr{{\rm pr}}
+\def\logit{{\rm logit}}
+\def\T{{ \mathrm{\scriptscriptstyle T} }}
+\def\diag{{\rm diag}}  
+\def\half{{\textstyle{1\over 2}}}
+\def\ith{{$i{\rm th}$ }}
+\def\var{{\rm var}}
+\def\cl{{{\rm c}\ell}}
+\def\checkx{{\checked\hspace{-6pt}\setminus}}
+\def\grad{{\nabla}}
+%====== NEW COMMANDS ======
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\1}{\mathds 1}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\sd}{\text{sd}}
+\newcommand{\se}{\text{se}}
+\renewcommand{\L}{\mathcal {L}}
+\renewcommand{\lambda}{\uplambda}
+\newcommand{\iidsim}{\stackrel{iid}{\sim}}
+\newcommand{\otherwise}{\text{otherwise}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ind}{\stackrel{d}{\to}}
+\newcommand{\inp}{\stackrel{p}{\to}}
+\newcommand{\inas}{\stackrel{a.s.}{\to}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\sloppy %permits line-breaking of urls
+
+\def\blue{\color{blue}}
+\def\red{\color{red}}
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\begin{document}
+
+\noindent{\bf Questions Week 2} {\hfill STA 2212S 2026}\\
+
+%{\bf Due January 14} \hfill{\it MS, Exercise 5.2}
+
+\bigskip
+
+\begin{enumerate}
+
+\item {\em From SM Exercise 11.5.2:} 
+Consider $X \sim Binom(m,\theta)$  and assume a $Beta(\alpha,\beta)$ prior for $\theta$. As shown in class, the posterior distribution $\pi(\theta\mid x)$ is $Beta(\alpha+x, \beta+m-x)$. 
+\begin{enumerate}
+\item Show that the marginal distribution of $X$ is 
+\begin{eqnarray*}
+	f(x\mid \mu, \nu) = \frac{\Gamma(\nu)}{\Gamma(\nu\mu)\Gamma\{\nu(1-\mu)\}}{m\choose x} \frac{\Gamma(x+\nu\mu)\Gamma\{m-x+\nu(1-\mu)\}}{\Gamma(m+\nu)}, \\ \quad x=0, \dots, m,
+\end{eqnarray*}
+where $\mu=\alpha/(\alpha+\beta)$ and $\nu=\alpha+\beta$, and deduce that
+\begin{eqnarray*}
+	\E(X/m) = \mu, \quad \text{var}(X/m) = \frac{\mu(1-\mu)}{m}\left(1+\frac{m-1}{\nu+1}\right).
+\end{eqnarray*}
+\item Suppose now that we have $n$ independent binomial responses $X_1, \dots, X_n$, each with probability of success $\theta_i$:  $$f(x_i\mid \theta_i) = {m\choose x_i}\theta_i^{x_i}(1-\theta_i)^{m-x_i}, \quad x_i = 0, \dots, m.$$ 
+%\item {(c)}	
+%Using the $Beta(\alpha,\beta)$ prior for $\theta_i$, show that the expected value of the posterior distribution of $\theta_i$ is \begin{equation}\E(\theta_i\mid\bs{x}) = \frac{x_i+{\alpha}}{m+{\alpha + \beta}}.\end{equation}
+Describe how the results of (a) can be used to estimate the parameters $(\alpha,\beta)$ of the prior. 
+\item Using these estimates, show that an estimate of the posterior expected value of $\theta_i$ is a weighted combination of the proportion of successes in the $i$th group and the proportion of successes in all groups combined. 
+\end{enumerate}
+\textcolor{red}{(a) The prior density of $\theta$ is 
+\begin{equation*}
+    \pi(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)}\theta^{\alpha-1}(1-\theta)^{\beta - 1}
+\end{equation*}
+for $\theta \in \Theta = (0, 1)$. 
+Then the marginal density of $X$ is 
+\small
+\begin{align*}
+    p(x) &= \int_0^1 \mathcal L(x ; \theta)\pi(\theta) d\theta\\
+    &= \int_0^1 \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1}(1-\theta)^{\beta-1} \binom mx \theta^x (1-\theta)^{m-x} d\theta\\
+    &= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\binom mx \frac{\Gamma(\alpha+x)\Gamma(\beta+m-x)}{\Gamma(\alpha+\beta+m)} \int_{\Theta}\underbrace{\frac{\Gamma(\alpha+\beta+m)}{\Gamma(\alpha+x)\Gamma(\beta+m-x)} \theta^{\alpha+x-1}(1-\theta)^{\beta+m-x-1}}_{\text{density of Beta}(\alpha+x, \beta+m+x)}d\theta\\
+    &= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \binom mx \frac{\Gamma(\alpha+x)\Gamma(\beta+m-x)}{\Gamma(\alpha+\beta+m)}\\
+    &= \frac{\Gamma(\nu)}{\Gamma(\nu\mu)\Gamma(\nu(1-\mu))}\binom mx \frac{\Gamma(x+\nu\mu)\Gamma(m-x + \nu(1-\mu))}{\Gamma(m + \nu)}
+\end{align*}
+\normalsize
+By the Law of Total Expectation, 
+\begin{equation*}
+    E(X) = E_\theta[E(X \mid \theta)] = E_\theta[m\theta] = mE_\theta(\theta) = m \mu
+\end{equation*}
+thus $E(X / m) = \mu$. By the Law of Total Variance, 
+\begin{align*}
+    \Var(X) &= E_\theta[\Var(X \mid \theta)] + \Var_\theta[E(X \mid \theta)]\\
+    &= E_\theta[m\theta(1-\theta)] + \Var_\theta[m\theta]\\
+    &= mE_\theta[\theta - \theta^2] + m^2\frac{\mu(1-\mu)}{\nu + 1}\\
+    &= m(\mu - \Var_\theta(\theta) + \mu^2) + m^2\frac{\mu(1-\mu)}{\nu + 1}\\
+    &= m(\mu(1-\mu) - \Var(\theta)) + m^2\frac{\mu(1-\mu)}{\nu + 1}\\
+    &= m\mu(1-\mu) + (m^2 - m) \frac{\mu(1-\mu)}{\nu + 1}
+\end{align*}
+so 
+\begin{equation*}
+    \Var(X/m) = \frac{1}{m^2} \Var(X) = \frac{\mu(1-\mu)}{m}\left( 1 + \frac{m-1}{\nu + 1}\right)
+\end{equation*}
+(b) The result from (a) implies that we have 
+\begin{equation*}
+    f(x_i \mid \alpha, \beta) = \frac{\Gamma(\nu)}{\Gamma(\nu\mu)\Gamma(\nu(1-\mu))}\binom{m}{x_i} \frac{\Gamma(x_i+\nu\mu)\Gamma(m-x_i + \nu(1-\mu))}{\Gamma(m + \nu)}
+\end{equation*}
+Define the likelihood function 
+\begin{equation*}
+    \mathcal L(\alpha, \beta \mid \mathbf x) = \prod_{i=1}^n \frac{\Gamma(\nu)}{\Gamma(\nu\mu)\Gamma(\nu(1-\mu))}\binom{m}{x_i} \frac{\Gamma(x_i+\nu\mu)\Gamma(m-x_i + \nu(1-\mu))}{\Gamma(m + \nu)}
+\end{equation*}
+where $\mathbf x = (x_1,\ldots, x_n)'$ is the vector of realizations of $\mathbf X = (X_1,\ldots, X_n)'$. 
+By optimizing $\mathcal L$ and obtaining the MLEs of $\alpha$ and $\beta$ respectively, we can estimate the parameters of the prior of $\theta$. \\
+(c) Using these estimates, the estimated posterior for $\theta_i$ is $\text{Beta}(\hat\alpha + x_i, \hat\beta + m -x_i)$ where $\hat\alpha$ and $\hat\beta$ are the MLEs of $\alpha$ and $\beta$ respectively. The estimated expectation is then 
+\begin{equation*}
+    \widehat{E(\theta_i \mid X_i)} = \frac{\hat\alpha + X_i }{(\hat\alpha + X_i) + (\hat\beta + m - X_i)} = \frac{\hat\alpha + X_i}{\hat\alpha + \hat\beta + m}
+\end{equation*}
+By invariance the MLE, we can estimate $\mu$ and $\nu$ as $\hat\nu = \hat\alpha + \hat\beta$ and $\hat\mu = \hat\alpha/(\hat\alpha + \hat\beta)$, thus 
+\begin{equation*}
+    \widehat{E(\theta_i \mid X_i)} = \frac{m}{m + \hat\nu}\frac{X_i}{m} + \frac{\hat\nu}{m + \hat\nu}\hat\mu
+\end{equation*}
+which is a weighted sum of the proportion of successes in the $i$'th group ($X_i / m$), and the overall proportion $\hat\mu$. 
+}
+
+\item {\it Cox \& Hinkley, Ex.8.1}: This example illustrates in extreme form why exact unbiasedness of an estimator is not always useful. Suppose $X$ follows the geometric distribution with probability mass function 
+$$
+f(x;\theta) = (1-\theta)^x \theta, \quad 0 \le\theta\le 1,\, x = 0, 1, \dots \,.
+$$
+
+Show that the unique unbiased estimator of $\theta$ is 
+$\widetilde\theta (x) = 1$ if $x=0$, and $\widetilde\theta(x) = 0$ for $x = 1, 2, \dots$\,.  
+
+\textcolor{red}{
+    First, we show that $\tilde\theta$ is unbiased. 
+    \begin{equation*}
+        E(\tilde\theta) = \sum_{x=0}^\infty \tilde\theta(x)(1-\theta)^x\theta = (1-\theta)^0\theta = \theta
+    \end{equation*}
+    hence $\tilde \theta$ is unbiased. 
+    To show uniqueness, suppose there exists another estimator $\hat\theta$ such that $\hat\theta$ is unbiased. This implies 
+    \begin{equation*}
+        \theta = E(\hat\theta) = \sum_{x=0}^\infty \hat\theta(x) (1-\theta)^x \theta = \hat\theta(0)\theta + \sum_{x=1}^\infty \hat\theta(x)(1-\theta)^x\theta
+    \end{equation*}
+    thus 
+    \begin{equation*}
+        1 = \hat\theta(0) + \sum_{x=1}^\infty \hat\theta(x) (1-\theta)^x
+    \end{equation*}
+    Since for each $x \geq 1$, $\hat\theta(x)(1-\theta)^x$ is a term dependent on $\theta$ unless $\hat\theta(x) = 0$, then we must have $\hat\theta(x) = 0$ for all $x = 1,\ldots,$, which implies $\hat\theta(0) = 1$. This implies $\hat\theta = \tilde\theta$, hence showing uniqueness. 
+}
+\end{enumerate}
+\end{document}
+
