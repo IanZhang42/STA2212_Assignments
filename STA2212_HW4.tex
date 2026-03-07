@@ -1,0 +1,145 @@
+\documentclass[12pt]{article}
+
+\usepackage{url,verbatim, amsmath, amssymb, amsfonts, dsfont, color}
+\textwidth 15true cm
+\textheight 9true in
+\oddsidemargin 0.30true in
+\evensidemargin 0.30true in
+\topmargin -0.3true in
+\headsep 0.4true in
+
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\def\dotsim{\stackrel{.}{\sim}}
+\def\goesd{\stackrel{d}{\rightarrow}}
+\def\goesp{\stackrel{p}{\rightarrow}}
+\def\goeslaw{\stackrel{{\cal L}}{\longrightarrow}}
+%
+\def\vp{{\varphi}}
+\def\E{{\rm E}}
+\def\Pvalue{{$p$-value}}
+\def\Pvalues{{$p$-values}}
+\def\pr{{\rm pr}}
+\def\Pr{{\rm pr}}
+\def\logit{{\rm logit}}
+\def\T{{ \mathrm{\scriptscriptstyle T} }}
+\def\diag{{\rm diag}}  
+\def\half{{\textstyle{1\over 2}}}
+\def\ith{{$i{\rm th}$ }}
+\def\var{{\rm var}}
+\def\cl{{{\rm c}\ell}}
+\def\checkx{{\checked\hspace{-6pt}\setminus}}
+\def\grad{{\nabla}}
+\def\bs#1{{\boldsymbol{#1}}}
+
+\sloppy %permits line-breaking of urls
+
+\def\blue{\color{blue}}
+\def\red{\color{red}}
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\begin{document}
+
+\noindent{\bf Questions Week 4} {\hfill STA 2212S 2026}\\
+
+%{\bf Due January 14} \hfill{\it MS, Exercise 5.2}
+
+\bigskip
+
+\begin{enumerate}
+
+\item Suppose $X_i \sim N(\theta_i, 1), i = 1, \dots, n$ independently. Show that among all estimators of the form $$ \hat\theta_i(\boldsymbol{X}) = \left( 1-\frac{b}{\Sigma X_i^2}\right)X_i,$$ that the total risk under squared-error loss, defined as $$ R_\theta(\hat\theta) = \sum_{i=1}^n \E\{\hat\theta_i(\boldsymbol{X}) - \theta_i\}^2$$ is minimized by choosing $b = n-2$.
+
+{\it Hint:} To solve this problem you will need to evaluate $\E\frac{1}{\Sigma X_i^2}$, where $X_i \sim N(\theta_i, 1)$, independently. One way to find this expected value is to use Stein's identity: if If $Z \sim N(\mu, \sigma^2)$, and $g(Z)$ is an absolutely continuous function with $\E|g'(Z)|< \infty$, then  
+\begin{equation}
+\E\{g(Z)(Z-\mu)\} = \sigma^2\E\{g'(Z)\}.	 \nonumber
+\end{equation}
+
+\textcolor{red}{Rewrite 
+\small
+\begin{align*}
+    R_\theta(\hat\theta) &= \sum_{i=1}^n E\left[\left(X_i - \theta_i - b \frac{X_i}{\sum_{j=1}^n X_j^2}\right)^2\right]\\
+    &= \sum_{i=1}^n E((X_i - \theta_i)^2) - 2b \sum_{i=1}^n E\left[(X_i - \theta_j ) \frac{X_i}{\sum_{j=1}^n X_j^2}\right] + b^2 \sum_{i=1}^n E\left(\frac{X_i^2}{(\sum_{j=1}^n X_j^2)^2}\right)
+\end{align*}
+\normalsize
+Let $g(X_i) = \frac{X_i}{\sum_{j=1}^n X_j^2}$. Since $X_i \sim \mathcal N(0, 1)$, $g$ is absolutely continuous, then by Stein's identity, 
+\begin{equation*}
+    E((X_i - \theta_i)g(X_i)) = E(g'(X_i)) = E\left[\frac{1}{\sum_{j=1}^n X_j^2} - \frac{2X_i^2}{\left(\sum_{j=1}^n X_j^2\right)^2}\right]
+\end{equation*}
+thus 
+\begin{equation*}
+    R_\theta(\hat\theta) = n - 2b n E\left(\frac{1}{\sum_{j=1}^n X_j^2}\right) + (b^2 + 4b) E\left(\frac{1}{\sum_{j=1}^n X_j^2}\right)
+\end{equation*}
+so 
+\begin{align*}
+    \frac{\partial R_\theta}{\partial b} &= (2b + 4) E\left(\frac{1}{\sum_{j=1}^n X_j^2}\right)- 2n E\left(\frac{1}{\sum_{j=1}^n }X_j^2\right)\\
+    &= (2b + 4 - 2n)E\left(\frac{1}{\sum_{j=1}^n X_j^2}\right) \\
+    &= 0 \text{ if $b = n-2$}
+\end{align*}
+Taking the second derivative, 
+\begin{equation*}
+    \frac{\partial ^2 R_\theta}{\partial b^2} = 2E\left(\frac{1}{\sum_{j=1}^n X_j^2}\right) 
+\end{equation*}
+which is greater than 0 at $b = n-2$, thus $R_\theta$ is minimized in $b$ at $b = n-2$. 
+}
+\item Suppose $X_i, i = 1 \dots, n$ are independently normally distributed with $$\E(X_i\mid z_i) = z_i^\T\beta,$$ and known variance $\sigma^2$. In matrix form we have $$\bs X \sim N(Z\beta, \sigma^2 I),$$ where $\bs X = (X_1, \dots, X_n)$, and $Z$ is an $n \times p$ matrix with $i$th row $z_i^\T$. Thus $$L(\beta; \bs x) \propto  \exp\{-\frac{1}{2\sigma_0^2}(\bs x - Z \beta)^\T(\bs x - Z\beta)\}.$$\begin{enumerate}
+ \item 	 Give an expression for the log-likelihood ratio statistic 
+$$w_1(\beta) = w_1(\beta;\bs x) = 2\{\ell(\hat\beta;\bs{x})-\ell(\beta; \bs{x})\}$$.
+\item What is the {exact} distribution of $W_1 = w_1(\beta;\bs X)$ under the model?
+\item Suppose now that $\sigma^2$ is an unknown parameter. Give an expression for the generalized log-likelihood ratio statistic 
+$$w_2(\beta) = 2\{\ell(\hat\beta,\hat\sigma^2;\bs{x})-\ell(\beta,\tilde\sigma^2_\beta; \bs{x})\},$$  
+where $\tilde\sigma^2_\beta$ is the constrained maximum likelihood estimate of $\sigma^2$. 
+\item Show that if $\bs\beta = \bs 0$, $w_2$ is a monotone function of the usual $F$-statistic $$\frac{{\bs x^\T}Z(Z^\T Z)^{-1}Z^\T{\bs x}/p}{(\bs x-Z\hat\beta)^\T(\bs x-Z\hat\beta)/(n-p)}.$$
+\end{enumerate}
+\textcolor{red}{
+(a) 
+\begin{equation*}
+    \ell(\beta ; x) \propto -\frac{1}{2\sigma^2}(x - Z\beta)^\top (x - Z\beta)
+\end{equation*}
+Let $H = Z(Z^\top Z)^{-1} Z^\top$, so $H$ is symmetric and idempotent. Then 
+\begin{align*}
+    w_1(\beta) &= \frac{1}{\sigma_0^2}[(x - Z\beta)^\top (x - Z\beta) - (x - Z\hat\beta)^\top (x - Z\hat\beta)]\\
+    &= \frac{1}{\sigma_0^2}[x^\top x - 2x^\top Z\beta + \beta^\top Z^\top Z \beta - x^\top x + 2x^\top H x - x^\top H^\top H x]\\
+    &= \frac{1}{\sigma_0^2}[2x^\top Z\beta + \beta^\top Z^\top Z \beta + x^\top Z (Z^\top Z)^{-1} Z^\top x]\\
+    &= \frac{1}{\sigma_0^2}[(\beta - (Z^\top Z)^{-1} Z^\top x)^\top (Z^\top Z) (\beta - (Z^\top Z)^{-1} Z^\top x)]\\
+    &= \frac{1}{\sigma_0^2}(\beta - \hat\beta)^\top (Z^\top Z)(\beta - \hat\beta)
+\end{align*}
+(b) 
+\begin{align*}
+    \hat\beta &\sim \mathcal N_p(\beta, \sigma_0^2(Z^\top Z)^{-1}) \\
+    &\implies (\hat\beta - \beta)^\top \left(\frac{1}{\sigma_0}Z^\top Z\right)(\hat\beta - \beta) \sim \chi_p^2
+\end{align*}
+(c) The likelihood function is 
+\begin{equation*}
+    \mathcal L(\beta, \sigma ; x) = \frac{1}{(2\pi )^{d/2}(\sigma_0^2)^{n/2}}\exp\left(-\frac{1}{2\sigma_0^2}(x - Z\beta)^\top (x - Z\beta)\right)
+\end{equation*}
+The log-likelihood is thus 
+\begin{equation*}
+    \ell(\beta, \sigma ; x) = -\frac n2 \log \sigma^2 - \frac{1}{2\sigma^2} (x - Z\beta)^\top (x - Z\beta)  + C
+\end{equation*}
+for some constant $C$. Then 
+\begin{align*}
+    w_2(\beta) &= n\log \tilde \sigma_\beta^2 + \frac{1}{\sigma_\beta^2}(x - Z\beta)^\top (x - Z\beta) - n \log \hat\sigma^2 - \frac{1}{\hat\sigma^2}(x - Z\hat\beta)^\top (x - Z\hat\beta)\\
+    &= n \log \frac{\tilde \sigma_\beta^2}{\hat\sigma^2} + \frac{(x - Z\beta)^\top (x - Z\beta)}{(x - Z\beta)^\top (x - Z\beta)/n} - \frac{(x - Z\hat\beta)^\top (x - Z\hat\beta)}{(x - Z\hat\beta)^\top (x - Z\hat\beta)/n}\\
+    &= n\log \frac{\tilde \sigma_\beta^2}{\hat\sigma^2} + n - n \\
+    &= n \log \frac{\tilde \sigma_\beta^2}{\hat\sigma^2}
+\end{align*}
+(d) By definition, 
+\begin{equation*}
+    \frac{\tilde \sigma_\beta^2}{\hat\sigma^2} = \frac{(x - Z\beta)^\top (x - Z\beta)}{(x - Z\hat\beta)^\top (x - Z\hat\beta)}
+\end{equation*}
+If $\beta = 0$, then $\tilde \sigma_\beta^2 = x^\top x$. Let $F^*$ be the $F$-statistic. Then 
+\begin{align*}
+    \frac{n-p}{p}F^* &= \frac{x^\top Z(Z^\top Z)^{-1} Z^\top x}{(x - Z\hat\beta)^\top (x - Z\hat\beta)}\\
+    (x - Z\hat\beta)^\top (x - Z\hat\beta) &= x^\top x - x^\top Z(Z^\top Z)^{-1} Z^\top x
+\end{align*}
+so 
+\begin{align*}
+    \frac{\tilde \sigma_\beta^2}{\hat\sigma^2} &= \frac{(x - Z\hat\beta)^\top (x - Z\hat\beta) + x^\top Z (Z^\top Z)^{-1} Z^\top x}{(x - Z\hat\beta)^\top (x - Z\hat\beta)}\\
+    &= 1 + \frac{n-p}{p}F^*
+\end{align*}
+so $w_2 = n \log \left(1 + \frac{n-p}{p}F^*\right)$. Consider $f(x) = n\log (1 + \frac{n-p}{p}x)$. Then if $x < y$, we have $1 + \frac{n-p}{p}x < 1 + \frac{n-p}{p}y$, so $f(x) < f(y)$. Thus $f$ is monotone, so $w_2$ is a monotonic function of $F^*$. 
+}
+\end{enumerate}
+\end{document}
+
