@@ -1,0 +1,177 @@
+\documentclass[12pt]{article}
+
+\usepackage{url,verbatim, amsmath, amssymb, amsfonts, dsfont, color}
+\textwidth 15true cm
+\textheight 9true in
+\oddsidemargin 0.30true in
+\evensidemargin 0.30true in
+\topmargin -0.3true in
+\headsep 0.4true in
+
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\def\dotsim{\stackrel{.}{\sim}}
+\def\goesd{\stackrel{d}{\rightarrow}}
+\def\goesp{\stackrel{p}{\rightarrow}}
+\def\goeslaw{\stackrel{{\cal L}}{\longrightarrow}}
+%
+\def\vp{{\varphi}}
+\def\E{{\rm E}}
+\def\Pvalue{{$p$-value}}
+\def\Pvalues{{$p$-values}}
+\def\pr{{\rm pr}}
+\def\Pr{{\rm pr}}
+\def\logit{{\rm logit}}
+\def\T{{ \mathrm{\scriptscriptstyle T} }}
+\def\diag{{\rm diag}}  
+\def\half{{\textstyle{1\over 2}}}
+\def\ith{{$i{\rm th}$ }}
+\def\var{{\rm var}}
+\def\cl{{{\rm c}\ell}}
+\def\checkx{{\checked\hspace{-6pt}\setminus}}
+\def\grad{{\nabla}}
+\def\bs#1{{\boldsymbol{#1}}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\1}{\mathds 1}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\sd}{\text{sd}}
+\newcommand{\se}{\text{se}}
+\renewcommand{\L}{\mathcal {L}}
+\renewcommand{\lambda}{\uplambda}
+\newcommand{\iidsim}{\stackrel{iid}{\sim}}
+\newcommand{\otherwise}{\text{otherwise}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ind}{\stackrel{d}{\to}}
+\newcommand{\inp}{\stackrel{p}{\to}}
+\newcommand{\inas}{\stackrel{a.s.}{\to}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\sloppy %permits line-breaking of urls
+
+\def\blue{\color{blue}}
+\def\red{\color{red}}
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\begin{document}
+
+\noindent{\bf Questions Week 6} {\hfill STA 2212S 2026}\\
+
+%{\bf Due January 14} \hfill{\it MS, Exercise 5.2}
+
+\bigskip
+
+\begin{enumerate}
+
+\item {\it SM Exercise 7.3.8} If $I$ is Bernoulli with $\Pr(I=1) = (\alpha_2-\alpha)/(\alpha_2-\alpha_1)$, and ${\cal R}_{\alpha_1}, {\cal R}_{\alpha_2}$ are rejection regions of size $\alpha_1, \alpha_2$, show that the rejection region $${\cal R} = I{\cal R}_{\alpha_1} + (1-I){\cal R}_{\alpha_2}$$ has size $\alpha$. {\it Note: this is the basis for randomized tests for discrete distributions.}
+
+\textcolor{red}{
+We want to show that $P(X \in \mathcal R) = \alpha$. This rejection rule implies a test function $\phi(X, I)$ defined as 
+\begin{equation*}
+    \phi(X, I) = I\1_{X \in \mathcal R_{\alpha_1}} + (1 - I) \1_{X \in \mathcal R_{\alpha_2}}
+\end{equation*}
+Then 
+\begin{equation*}
+    P_{H_0} (X \in \mathcal R) = P_{H_0} (\phi(X, I) = 1) 
+\end{equation*}
+Since $\phi(X, I)$ is binary, then 
+\begin{align*}
+    P_{H_0}(\phi(X, I) = 1) &= E_{H_0} (\phi(X, I))\\
+    &= P(I = 1)P(X \in \mathcal R_{\alpha_1}) + P(I = 0) P(X \in \mathcal R_{\alpha_2})\\
+    &= \frac{\alpha_2 - \alpha}{\alpha_2 - \alpha_1} \alpha_1 + \frac{\alpha - \alpha_1}{\alpha_2 - \alpha_1} \alpha_2\\
+    &= \frac{\alpha_1\alpha_2 - \alpha_1\alpha + \alpha_2\alpha -\alpha_1\alpha_2}{\alpha_2 - \alpha_1}\\
+    &= \alpha
+\end{align*}
+hence $\mathcal R$ has size $\alpha$. 
+}
+
+\item {\em  A Bayesian approach to  multiple testing} (adapted from Efron and Hastie \S 15.3)\\
+Suppose we have computed $m$ test statistics $t_1, \dots, t_m$, and for each $j$ we will reject $H_{0j}$ if $t_j > t_0$, where $t_0$ is some cut-off to be determined. A statistical model for this could start with prior probabilities $\pi_0$ and $\pi_1 = 1-\pi_0$ that any $H_{0j}$ is true or not; and densities for $t_j$ either $f_0(t)$ or $f_1(t)$,  when $H_{0j}$ is true, or false, respectively. Since we don't know which $H_{0j}$ are true, the marginal density of $t_j$ is
+\begin{equation}
+f(t) = \pi_0 f_0(t) + \pi_1f_1(t).
+\end{equation}
+\begin{description}
+\item{(i)} The {\em Bayes false-discovery rate} for cutoff $t_0$ is defined as
+$$
+Fdr(t_0) = \pr\{ H_{0j} \text{ is true } \mid t_j \ge t_0\}.
+$$
+Show that this is equal to $$\pi_0\{1-F_0(t_0)\}/\{1-F(t_0)\},$$ 
+where $F(t)$ is the cumulative distribution function for the density (1). 
+\item{(ii)} We don't know $F(t_0)$, but a reasonable estimate is the empirical c.d.f   $\widehat F(t_0) = m^{-1}\sum_{j=1}^m 1\{t_j \le t_0\}$ and hence
+$$
+\widehat{Fdr}(t_0)=\pi_0\{1-F_0(t_0)\}/\{1-\widehat F(t_0)\},
+$$  Show that for $0 < q < 1$, the condition $$p_{(i)}\le (i/m)q$$ is equivalent to $$\widehat{Fdr}(t_{(i)}) \le \pi_0q.$$ 
+\end{description}
+
+\textcolor{red}{
+(i) By Bayes' rule, 
+\begin{align*}
+    P(H_{0j} \text{ is true} \mid t_j \geq t_0) &= \frac{P(H_{0j} \text{ is true})}{P(t_j \geq t_0)} P(t_j \geq t_0 \mid H_{0j} \text{ is true})\\
+    &= \frac{\pi_0}{1 - F(t_0)} (1 - F_0 (t_0))
+\end{align*}
+since the density of $t_j$ given $H_{0j}$ is true is $f_0$ and the marginal density of $t_j$ is $f$. 
+}
+
+\textcolor{red}{
+(ii) Consider the $p$-values $p_j = 1 - F_0(t_j)$, so the ordering $p_{(1)} \leq p_{(2)} \leq \cdots \leq p_{(m)}$ of the $p$-values corresponding to the ordering $t_{(1)} \geq t_{(2)} \geq \cdots \geq t_{(m)}$ of the test statistics. Then 
+\begin{align*}
+    &p_{(i)} \leq \frac im q \\
+    \iff & 1 - F_0(t_{(i)}) \leq \frac im q\\
+    \iff & \pi_0 \frac{1 - F_0(t_{(i)})}{1 - \hat F(t_{(i)})} \leq \frac im q \frac{\pi_0}{1 - \hat F(t_{(i)})}
+\end{align*}
+By definition, 
+\begin{equation*}
+    \hat F(t_{(i)}) = \frac 1m \sum_{j=1}^m \1_{t_j \leq t_{(i)}} = \frac{m-i}{m}
+\end{equation*}
+since $t_{(i)}$ is the $i$-th smallest test statistic. 
+Then this implies $1 - \hat F(t_{(i)}) = i/m$, hence 
+\begin{equation*}
+    p_{(i)} \leq \frac im q \iff \widehat{Fdr}(t_{(i)}) \leq \pi_0 q 
+\end{equation*}
+}
+
+\item State and prove the Neyman-Pearson Lemma. 
+
+\textcolor{red}{
+\textbf{Lemma:} If we consider parameter space $\Theta = \{\theta_0, \theta_1\}$ and a test $H_0: \theta = \theta_0$, $H_1 : \theta = \theta_1$, then among all tests of size  $\alpha$, the likelihood ratio test, defined with test statistic 
+\begin{equation*}
+    T = \frac{f(x ; \theta_1)}{f(x ; \theta_0)} = \frac{f_1(x)}{f_0(x)}
+\end{equation*}
+with rejection region $R = \{X : T(X) \geq \kappa_\alpha\}$ where $\alpha \geq P_{H_0}(T(X) \geq \kappa_\alpha)$ is the most powerful test. \\
+\textit{Proof.} Let $\tilde R$ be another rejection region with size  $\alpha$. This implies 
+\begin{equation*}
+    \alpha = \int _R f_0(x) dx = \int_{\tilde R} f_0(x) dx
+\end{equation*}
+Rewrite 
+\begin{align*}
+    \int_R f_0(x) dx &= \int_{R \cap \tilde R} f_0(x) dx + \int_{R\cap \tilde R^c} f_0(x) dx\\
+    \int_{\tilde R} f(x) dx &= \int _{\tilde R \cap R } f_0(x) dx + \int_{\tilde R \cap R^c} f_0(x) dx
+\end{align*}
+implies that 
+\begin{equation*}
+    \int_{R \cap \tilde R}f_0(x) dx = \int_{\tilde R \cap R^c} f_0(x) dx
+\end{equation*}
+By definition of $R$, for $x \in R$, $f_0(x) \leq \kappa_\alpha f_1(x)$ and in $R^c$, $f_0(x) > \kappa_\alpha f_1(x)$, so 
+\begin{equation*}
+    \int _{R \cap \tilde R^c} f_1(x) dx \geq \int_{\tilde R \cap R^c} f_1(x) dx
+\end{equation*}
+Then 
+\small
+\begin{equation*}
+    \int_{R} f_1(x) dx = \int_{R \cap \tilde R^c} f_1(x) dx + \int_{R \cap \tilde R^c} f_1(x) dx \geq \int_{\tilde R \cap R^c} f_1(x) dx + \int_{\tilde R \cap R} f_1(x) dx = \int_{\tilde R} f_1(x) dx
+\end{equation*}
+\normalsize
+hence the test with rejection region $R$ is more powerful than the test with $\tilde R$. 
+}
+
+\end{enumerate}
+\end{document}
+
