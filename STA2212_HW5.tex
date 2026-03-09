@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+\usepackage{url,verbatim, amsmath, amssymb, amsfonts, dsfont, color}
+\textwidth 15true cm
+\textheight 9true in
+\oddsidemargin 0.30true in
+\evensidemargin 0.30true in
+\topmargin -0.3true in
+\headsep 0.4true in
+
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\def\dotsim{\stackrel{.}{\sim}}
+\def\goesd{\stackrel{d}{\rightarrow}}
+\def\goesp{\stackrel{p}{\rightarrow}}
+\def\goeslaw{\stackrel{{\cal L}}{\longrightarrow}}
+%
+\def\vp{{\varphi}}
+\def\E{{\rm E}}
+\def\Pvalue{{$p$-value}}
+\def\Pvalues{{$p$-values}}
+\def\pr{{\rm pr}}
+\def\Pr{{\rm pr}}
+\def\logit{{\rm logit}}
+\def\T{{ \mathrm{\scriptscriptstyle T} }}
+\def\diag{{\rm diag}}  
+\def\half{{\textstyle{1\over 2}}}
+\def\ith{{$i{\rm th}$ }}
+\def\var{{\rm var}}
+\def\cl{{{\rm c}\ell}}
+\def\checkx{{\checked\hspace{-6pt}\setminus}}
+\def\grad{{\nabla}}
+\def\bs#1{{\boldsymbol{#1}}}
+
+\sloppy %permits line-breaking of urls
+
+\def\blue{\color{blue}}
+\def\red{\color{red}}
+\def\sgn{{\rm sign}}
+\def\drightarrow{{\stackrel{d}{\rightarrow}}}
+\begin{document}
+
+\noindent{\bf Questions Week 5} {\hfill STA 2212S 2026}\\
+
+%{\bf Due January 14} \hfill{\it MS, Exercise 5.2}
+
+\bigskip
+
+\begin{enumerate}
+
+\item Suppose $X$ is a random variable with density $f(\cdot)$ and continuous distribution function $F(\cdot)$ defined over the whole real line $\mathbb{R}$.  Define the $p$-value for testing $H_0:F(\cdot) = F_0(\cdot)$ as $$
+p^{obs}(x^{obs}) = \text{Pr}_{H_0}(X \ge x^{obs}),$$ where $x^{obs}$ is the observed value of $X$. 
+\begin{enumerate}
+\item 	Show that the distribution of $p^{obs}(X)$ is $U(0,1)$ under $H_0$. This question is a slight re-stating of {\blue AoS, Theorem 10.14}.
+\item Suppose we carry out $k$ significance tests, leading to $p$-values $p_1^{obs}, \dots, p_k^{obs}$, and we report the smallest of these $q^{obs} = \min(p_j^{obs})$, say. One way to model this is to define the test statistic  
+$$
+Q = \min\{P_1, \dots, P_k\}, 
+$$
+where small values of $Q$ are evidence against $H_0$. 
+
+Use the result of part (a) to show that
+$$
+\Pr(Q \le  q^{obs}; H_0) \le \sum_{j=1}^k\Pr(P_j \le q^{obs}) = kq^{obs}.
+$$   
+\end{enumerate}
+\textcolor{red}{
+(a) By definition, $p^{obs}(x) = P_{H_0}(X \geq x) = 1 - F_0(x)$. Let $p^* \in [0, 1]$. Since the $p$-value is a probability, it must lie within $[0, 1]$, so the cdf of the $p$-value can be computed as
+\begin{align*}
+    P_{H_0}(p^{obs}(X) \leq p^*) &= P_{H_0}(1 - F_0(X) \leq p^*) \\
+    &= P_{H_0}(X \geq F_0^{-1}(1 - p^*)) \\
+    &= 1 - F_0(F_0^{-1}(1 - p^*))\\
+    &= p^*
+\end{align*}
+thus the cdf of $p^{obs}$ is the cdf of a $U(0, 1$) random variable under $H_0$. So, $p^{obs} \sim_{H_0} U(0, 1)$.
+}
+
+\noindent \textcolor{red}{
+(b) By finite subadditivity, 
+\begin{align*}
+    P_{H_0}(Q \leq q^{obs}) &= P_{H_0}(\min\{P_1, \ldots, P_k\} \leq q^{obs})\\
+    &= P_{H_0} \left(\bigcup_{i=1}^k \{P_i \leq q^{obs}\}\right)\\
+    &\leq \sum_{i=1}^k P_{H_0} (P_i \leq q^{obs})\\
+    &= \sum_{i=1}^k q^{obs}\\
+    &= kq^{obs}
+\end{align*}
+}
+\item Suppose that $(X_{1i}, X_{2i}), i = 1, \dots, n$ follow the bivariate normal distribution with expected value $(\theta_1, \theta_2)$ and identity covariance matrix: the joint distribution of the sample $(x_1, x_2) = (x_{11}, \dots , x_{1n}, x_{21}, \dots, x_{2n})$ is then
+$$
+f( x_1,  x_2;\theta) = \left(\frac{1}{2\pi}\right)^n\exp\left[-\frac{1}{2}\left\{\sum(x_{1i}-\theta_1)^2 + \sum(x_{2i}-\theta_2)^2\right\}\right]
+$$
+The parameter space is restricted to $\theta_1 \ge 0, \theta_2 \ge 0$.
+\begin{enumerate}
+
+\item Show that the maximum likelihood estimators of $\theta_1$ and $\theta_2$ are given by
+$$
+\hat\theta_1 = \max(\bar x_1,0), \quad \hat\theta_2 = \max(\bar x_2, 0).
+$$
+\item  Derive the form of the log-likelihood ratio statistic $w = 2\{\ell(\hat\theta) - \ell(\theta_0)\}$ for testing $H_0: (\theta_1, \theta_2) = (\theta_{01},\theta_{02}) = (0,0)$. %{\blue It has a different expression for $(\bar x_1, \bar x_2)$ in each of the 4 quadrants of the plane.}
+\item   Show that 
+the distribution of $w$ under $H_0$ is 
+$$
+\frac{1}{4}\delta_{\{0\}} + \frac{1}{2}\chi_1^2 + \frac{1}{4}\chi_2^2,
+$$
+where $\delta_{\{0\}}$ is a point mass at $0$.
+\end{enumerate}
+\end{enumerate}
+\textcolor{red}{
+(a) The log-likelihood is 
+\begin{equation*}
+    \ell(\theta_1, \theta_2 ; x_1, x_2) = -\frac{1}{2}\left[\sum_{i=1}^n \left((x_{1i} - \theta_1)^2 + (x_{2i} - \theta_2)^2 \right)\right] + C
+\end{equation*}
+hence 
+\begin{align*}
+    \frac{\partial \ell}{\partial \theta_1} &= \sum_{i=1}^n (\theta_1 - x_{1i}) = n\theta_1 - \sum_{i=1}^n x_{1i}\\
+    \frac{\partial \ell}{\partial \theta_2} &= \sum_{i=1}^n (\theta_2 - x_{2i}) = n\theta_2 - \sum_{i=1}^n x_{2i}
+\end{align*}
+Setting both to 0 and solving for $\theta_1$ and $\theta_2$ over the parameter space yields MLEs 
+\begin{equation*}
+    \hat\theta_1 = \max(\bar x_1, 0) \qquad \hat\theta_2 = \max(\bar x_2, 0)
+\end{equation*}
+since $\ell$ is decreasing in both $\theta_1$ and $\theta_2$. 
+}
+
+\noindent \textcolor{red}{
+(b) From part(a), 
+\begin{equation*}
+    \ell(\hat\theta) = -\frac{1}{2}\left[\sum_{i=1}^n \left((x_{1i} - \hat\theta_1)^2 + (x_{2i} - \hat\theta_2)^2 \right)\right] + C
+\end{equation*}
+and 
+\begin{equation*}
+    \ell(\theta_0) =  -\frac{1}{2}\left[\sum_{i=1}^n \left(x_{1i}^2 + x_{2i}^2 \right)\right] + C
+\end{equation*}
+Then 
+\begin{align*}
+    (x_{1i} - \hat\theta_1)^2 + (x_{2i} - \hat\theta_2)^2 - x_{1i}^2 - x_{2i}^2 &= -2x_{1i}\hat\theta_1 - 2x_{2i}\hat\theta_2 + \hat\theta_1^2 + \hat\theta_2^2\\
+    &= \hat\theta_1(\hat\theta_1 - 2x_{1i}) + \hat\theta_2(\hat\theta_2 - 2x_{2i})
+\end{align*}
+This implies 
+\begin{align*}
+    w &= 2\left(-\frac{1}{2}\sum_{i=1}^n (\hat\theta_1(\hat\theta_1 - 2x_{1i}) + \hat\theta_2(\hat\theta_2 - 2x_{2i}))\right)\\
+    &= \sum_{i=1}^n \left(\hat\theta_1(2x_{1i} - \hat\theta_1) + \hat\theta_2(2x_{2i} - \hat\theta_2)\right) \\
+    &= \hat\theta_1 \left(2\sum_{i=1}^n x_{1i} - n\hat\theta_1\right) + \hat\theta_2\left(2\sum_{i=1}^n x_{2i} - n\hat\theta_2\right)
+\end{align*}
+If $\bar x_1 > 0$, then 
+\begin{equation*}
+    \hat\theta_1 \left(2\sum_{i=1}^n x_{1i} - n\hat\theta_1\right) = n\bar x_1^2
+\end{equation*}
+and similarly if $\bar x_2 > 0$, then 
+\begin{equation*}
+    \hat\theta_2 \left(2\sum_{i=1}^n x_{2i} - n\hat\theta_2\right) = n\bar x_2^2
+\end{equation*}
+However if $\bar x_1 \leq 0$, then 
+\begin{equation*}
+    \hat\theta_1 \left(2\sum_{i=1}^n x_{1i} - n\hat\theta_1\right) = 0
+\end{equation*}
+and similarly if $\bar x_2 \leq 0$, then 
+\begin{equation*}
+    \hat\theta_2 \left(2\sum_{i=1}^n x_{2i} - n\hat\theta_2\right) = 0
+\end{equation*}
+thus 
+\begin{equation*}
+    w =n \left(\max(\bar x_1, 0)^2 + \max(\bar x_2 , 0)^2\right)
+\end{equation*}
+}
+
+\noindent \textcolor{red}{
+(c) We consider cases $\bar x_1 \leq 0, \bar x_2 > 0$, $\bar x_1 > 0, \bar x_2 \leq 0$, $\bar x_1, \bar x_2 \leq 0$, and $\bar x_1, \bar x_2 > 0$. Then 
+\begin{equation*}
+    w = \begin{cases}
+        0 & \bar x_1 \leq 0, \bar x_2\leq 0\\
+        \bar x_1^2 & \bar x_1 > 0, \bar x_2 \leq 0\\
+        \bar x_2^2 & \bar x_1 \leq 0, \bar x_2 > 0\\
+        \bar x_1^2 + \bar x_2 & \bar x_1 > 0, \bar x_2 > 0
+    \end{cases}
+\end{equation*}
+Under the null, we have $(X_{1i}, X_{2i}) \sim \mathcal N_2(0, I_2)$, hence 
+\begin{equation*}
+    \bar X_1 \sim_{H_0} \mathcal N\left(0, \frac 1n\right) \qquad \bar X_2 \sim_{H_0} \mathcal N\left( 0, \frac 1n \right)
+\end{equation*}
+Then 
+\begin{align*}
+    P(w = 0) &= P(\bar X_1 \leq 0, \bar X_2 \leq 0) = \frac{1}{4}\\
+    P(w = \bar X_1^2) &= P(\bar X_1 > 0, \bar X_2 \leq 0) = \frac 14\\
+    P(w = \bar X_2^2) &= P(\bar X_1 \leq 0, \bar X_2 > 0) = \frac 14\\
+    P(w = \bar X_1^2 + \bar X_2^2) &= P(\bar X_1 > 0, \bar X_2 > 0) = \frac 14
+\end{align*}
+Then the distribution of $w$ under $H_0$ is 
+\begin{equation*}
+    \frac{1}{4}\delta_{\{0\}} + \frac 12 \chi_1^2 + \frac 14 \chi_2^2
+\end{equation*}
+}
+\end{document}
