@@ -78,10 +78,104 @@
 	$$\displaystyle{\pr(R=1\mid\hat\mu) = \pr(Z > 0 \mid \hat\mu) = \Phi\left\{\frac{\gamma_0 + \gamma_1n^{1/2} + \rho n^{1/2}(\hat\mu-\mu)/\sigma)}{(1-\rho^2)^{1/2}}\right\}}.$$  
 	\item  Show that the estimate of $\mu$ is biased if $\rho>0$: \begin{align*}E(\hat\mu \mid R=1) &= \mu+\rho\sigma n^{-1/2}\zeta(\gamma_0+\gamma_1 n^{1/2}), %\mu+\rho\sigma\gamma_1\zeta'(\gamma_0)+\rho\sigma\zeta(\gamma_0)n^{-1/2}
 	\end{align*} where $\zeta(x) = \phi(x)/\Phi(x)$, and $\phi(\cdot), \Phi(\cdot)$ are the standard normal density and distribution function, respectively
-	\item For a collection of $k$ such studies, each producing estimate $\hat\mu_j \dotsim N(\mu, \sigma^2/n_j)$, derive the log-likelihood function given in Davison's eq.(5.34): $$ \ell(\mu,\rho, \sigma^2) = \sum_{j=1}^k \left\{\frac{1}{2}\log\sigma^2 + \frac{n_j}{2\sigma^2}(\hat\mu-\mu)^2 - \log\Phi(a_j)+\log\Phi(b_j) \right\}, $$
-	where $a_j = \gamma_0+\gamma^1n_j^{1/2}$ and $ b_j = \{a_j+\rho n_j^{1/2}(\hat\mu_j-\mu)/\sigma\}(1-\rho^2)^{-1/2}$.
+	\item For a collection of $k$ such studies, each producing estimate $\hat\mu_j \dotsim N(\mu, \sigma^2/n_j)$, derive the log-likelihood function given in Davison's eq.(5.34): $$ \ell(\mu,\rho, \sigma^2) = \sum_{j=1}^k \left\{-\frac{1}{2}\log\sigma^2 + \frac{n_j}{2\sigma^2}(\hat\mu-\mu)^2 - \log\Phi(a_j)+\log\Phi(b_j) \right\}, $$
+	where $a_j = \gamma_0+\gamma_1n_j^{1/2}$ and $ b_j = \left\{a_j+\rho n_j^{1/2}(\hat\mu_j-\mu)/\sigma\right\}(1-\rho^2)^{-1/2}$.
 	\item Verify that if $\rho=0$ that the maximum likelihood estimate of $\mu$ is $$\frac{\sum_{j=1}^k n_j\hat\mu_j}{\sum_{j=1}^k n_j}.$$
 \end{enumerate}
+
+\textcolor{red}{
+(a) By definition, 
+\begin{align*}
+	P(R = 1) &= P(Z > 0)\\
+	&= P(U_2 > -\gamma_0 - \gamma_1 n^{1/2})\\
+	&= 1 - P(U_2 \leq -\gamma_0 - \gamma_1 n^{1/2})\\
+	&= \Phi(\gamma_0 + \gamma_1n^{1/2})
+\end{align*}
+By definition, $\hat\mu \sim \mathcal N(\mu, \sigma^2/n)$ and $Z \sim \mathcal N(\gamma_0 + \gamma_1n^{1/2}, 1)$. This implies 
+\begin{equation*}
+	\begin{pmatrix}
+		Z \\ \hat\mu	
+	\end{pmatrix} \sim \mathcal N_2\left(\begin{pmatrix}
+		\gamma_0 + \gamma_1 n^{1/2} \\
+		\mu
+	\end{pmatrix}, \begin{pmatrix}
+		1 & \rho\sigma n^{-1/2}\\
+		\rho \sigma n^{-1/2} & \sigma^2 / n
+	\end{pmatrix}\right)
+\end{equation*}
+so 
+\begin{equation*}
+	Z \mid \hat \mu \sim \mathcal N\left(\gamma_0 + \gamma_1 n^{1/2} +  \rho n^{1/2}\frac{\hat\mu - \mu}{\sigma}, 1 - \rho^2\right)
+\end{equation*}
+and hence 
+\begin{align*}
+	P(Z > 0 \mid \hat\mu) &= P\left(X > \frac{-\gamma_0 - \gamma_1n^{1/2}  - \rho n^{1/2}(\hat\mu - \mu) / \sigma}{(1 - \rho^2) ^{1/2} }\right) & \text{where $X \sim \mathcal N(0, 1)$}\\
+	&= \Phi\left(\frac{\gamma_0 + \gamma_1 n^{1/2} + \rho n^{1/2} (\hat\mu - \mu)/\sigma}{(1 - \rho^2)^{1/2}}\right)
+\end{align*}
+as required.
+}
+
+\textcolor{red}{
+(b) By definition, 
+\begin{equation*}
+	E[\hat\mu \mid Z > 0] = \mu + \sigma n^{-1/2} E[U_1 \mid U_2 > -\gamma_0 - \gamma_1n^{1/2}]
+\end{equation*}
+We know that 
+\begin{equation*}
+	\begin{pmatrix}
+		U_1 \\ U_2
+	\end{pmatrix} \sim \mathcal N_2\left(\begin{pmatrix}
+		0 \\ 0
+	\end{pmatrix}, \begin{pmatrix}
+		1 & \rho \\ \rho & 1
+	\end{pmatrix}\right)
+\end{equation*}
+By the law of iterated expectation, 
+\begin{equation*}
+	E[U_1 \mid U_2 > -\gamma_0 - \gamma_1 n^{1/2}] = E[E[U_1 \mid U_2] \mid U_2 > -\gamma_0 - \gamma_1 n^{1/2}]
+\end{equation*}
+Since $E[U_1 \mid U_2] = \rho U_2$, then 
+\begin{align*}
+	E[U_1 \mid U_2 >  -\gamma_0 - \gamma_1 n^{1/2}] &= \rho E[U_2 \mid U_2 >  -\gamma_0 - \gamma_1 n^{1/2}] \\
+	&= \frac{E[U_2 \1_{U_2 >  -\gamma_0 - \gamma_1 n^{1/2}}]}{P(U_2 >  -\gamma_0 - \gamma_1 n^{1/2})}\\
+	&= \frac{1}{\Phi(\gamma_0 + \gamma_1 n^{1/2})} \int_{ -\gamma_0 - \gamma_1 n^{1/2}}^{\infty} u\phi(u) du\\
+	&= \frac{\phi(\gamma_0 + \gamma_1 n^{1/2})}{\Phi( \gamma_0 + \gamma_1 n^{1/2})}
+\end{align*}
+hence 
+\begin{equation*}
+	E(\hat \mu \mid R = 1) = \mu + \rho\sigma n^{-1/2} \zeta(\gamma_0 + \gamma_1 n^{1/2})
+\end{equation*}
+}
+
+\textcolor{red}{
+(c) Since we only observe the publisehd studies, the likelihood function is 
+\begin{align*}
+	\mathcal L(\mu, \rho, \sigma^2) &= \prod_{j=1}^k f(\hat \mu_j  \mid R_j = 1)\\
+	&= \prod_{j=1}^k \frac{f(\hat\mu_j) P(R_j = 1 \mid \mu_j)}{P(R_j = 1)}\\\
+	&= \prod_{j=1}^k \frac{\exp\left(-\frac{n_j}{2\sigma^2}(\hat\mu_j - \mu)^2\right)\Phi\left(\frac{\gamma_0 + \gamma_1 n^{1/2} + \rho n^{1/2} (\hat\mu - \mu)/\sigma}{(1 - \rho^2)^{1/2}}\right)}{\Phi(\gamma_0 + \gamma_1 n^{1/2})\sqrt{2\pi \sigma^2/n_j}}
+\end{align*}
+thus the log-likelihood is
+\begin{equation*}
+	\ell(\mu, \rho, \sigma^2) = \sum_{i=1}^n \left[-\frac 12 \log \sigma^2 - \frac{n_j}{2\sigma^2}(\hat\mu_j - \mu)^2 + \log \Phi(b_j) - \log \Phi(a_j)\right] + C
+\end{equation*}
+}
+
+\textcolor{red}{
+(d) When $\rho = 0$, 
+\begin{equation*}
+	\ell(\mu, 0, \sigma^2) = \sum_{j=1}^k \left[-\frac 12 \log \sigma^2 + \frac{n_j}{2\sigma^2}(\hat\mu_j - \mu)^2\right]
+\end{equation*}
+Differentiating wrt $\mu$ yields 
+\begin{equation*}
+	\frac{\partial \ell}{\partial \mu} = \sum_{j=1}^k \frac{n_j}{\sigma^2}(\mu - \hat\mu_j) = 0
+\end{equation*}
+Solving yields an MLE for $\mu$ of 
+\begin{equation*}
+	\hat\mu = \frac{\sum_{j=1}^k n_j \hat\mu_j}{\sum_{j=1}^k n_j}
+\end{equation*}
+as required. 
+}
+
 \item{\it Davison, Exercise 5.8, Applying the EM algorithm to censored data}
 \begin{enumerate}
 	\item Suppose $U$ is an underlying failure time, and that $Y=\min(U, c)$ and $D = I(U\le c)$ are observed, where $c$ is a fixed censoring time. The complete data log-likelihood function is $f(u;\theta)$. Show that $$f(u\mid y,d;\theta) = \begin{cases} \delta(u-y),&d=1, \\ \frac{f(u;\theta)}{1-F(c;\theta)}, & u>c, d=0, \end{cases}$$ where $\delta(u-y)$ is  the generalized derivative of the Heaviside function $H(u) = 1\{u\ge 0\}$, and satisfies $\int \delta(y-u)g(u)du = g(y)$ for any function $g(\cdot)$.\footnote{$\delta(\cdot)$ is called the Dirac delta function.}
@@ -94,16 +188,21 @@
 	i.e.~ $J(\theta) = I_c(\theta;y) - I_m(\theta;y)$, interpreted as meaning that the observed information equals the complete-data information minus the missing information.
 	\item Show that the missing information for the model in (b) is $\sum_{j=1}^k(1-d_j)/\theta^2$. 
 \end{enumerate}
-\textcolor{red}{
+
+\noindent \textcolor{red}{
 (a) Suppose that $d = 1$. Then 
 \begin{equation*}
 	f(u \mid y, d = 1 ; \theta) = \delta(u-y)
 \end{equation*}
 since $u = y$ by definition. When $d = 0$ and $u > c$, 
-\begin{align*}
-	f(u \mid y, d = 0 ; \theta) &= \frac{P(Y - y, d = 0 \mid u)f(u)}{P(Y = y, \delta = 0)} \\
-	&= \frac{\1_{U >c} f(u)}{1 - F(c)}
-\end{align*}
+\begin{equation*}
+	f(u \mid y, d = 0 ; \theta) = \frac{P(Y = c, D = 0 \mid u)f(u)}{P(Y = c, D = 0)}
+\end{equation*}
+$D = 0$ implies that $U > c$, so $Y = c$, thus 
+\begin{equation*}
+	P(Y = c, d = 0) = P(U > c) = 1 - F(c ; \theta)
+\end{equation*}
+As well, when $u > c$, then $D = 0$ is guaranteed, so $P(Y = c, D = 0 \mid u) = 1$, 
 hence 
 \begin{equation*}
 	f(u \mid y, d ; \theta) = \begin{cases}
@@ -116,10 +215,38 @@ hence
 \textcolor{red}{
 (b) 
 \begin{align*}
-	E_{\theta'}[U \mid Y = y, D = d] &= d E_{\theta'}[U \mid Y = y, D = 1] + (1 - d) E_{\theta '} [U \mid Y = y, \delta = 0]\\
-	&= d y + (1 - d) E_{\theta'} [U \mid U > c]\\
-	&= d y + (1 - d) \left(c + \frac 1{\theta'}\right)
+	E_{\theta'}[U \mid Y = y, D = d] &= d E_{\theta'}[U \mid Y = y, D = 1] + (1 - d) E_{\theta '} [U \mid Y = y, D = 0]\\
+	&= d y + (1 - d) E_{\theta'} [U \mid U > c]
 \end{align*}
+To compute $E_{\theta'}[U \mid U > c]$, 
+\begin{align*}
+	E_{\theta'} [U \mid U > c] &= \frac{E_{\theta'} (U \1_{U > c})}{P(U > c)}\\
+	&= \frac{1}{\exp(-\theta' c)} \int_c^\infty \theta' u \exp(-\theta' u)du\\
+	&= c + \frac 1 {\theta'}
+\end{align*}
+thus 
+\begin{equation*}
+	E_{\theta'}[U \mid Y = y, D = d] = dy + (1 - d) \left(c + \frac{1}{\theta'}\right)
+\end{equation*}
+For the expectation step, we want to find $\theta^{(j)}$ defined as  
+\begin{equation*}
+	\theta^{(j)} = \argmax_{\theta} Q(\theta \mid \theta^{(j-1)})
+\end{equation*}
+where 
+\begin{align*}
+	Q(\theta \mid \theta^{(j-1)}) &= E_{\theta^{(j-1)}} (\ell(\theta) \mid y_1, d_1,\ldots, y_n, d_n)\\
+	&= E_{\theta^{(j-1)}} \left(n \log \theta - \theta \sum_{j=1}^n U_j \mid y_1, d_1,\ldots y_n, d_n\right)\\
+	&= n\log \theta - \theta \sum_{j=1}^n E(U_j \mid y_j, d_j)\\
+	&= n\log \theta - \theta \sum_{j=1}^n \left[d_j y_j + (1 - d_j) \left(c + \frac{1}{\theta^{(j-1)}}\right)\right]
+\end{align*}
+Differentiating $Q$ wrt $\theta$ yields 
+\begin{equation*}
+	\frac{\partial Q}{\partial \theta} = \frac n \theta - \sum_{j=1}^n \left[d_j y_j + (1 - d_j) \left( c + \frac{1}{\theta^{(j-1)}}\right)\right]
+\end{equation*}
+thus 
+\begin{equation*}
+	\theta^{(j)} = \frac{n}{\sum_{j=1}^n \left[d_j y_j + (1 - d_j) \left( c + \frac{1}{\theta^{(j-1)}}\right)\right]}
+\end{equation*}
 }
 \end{enumerate}
 \end{document}
