@@ -248,6 +248,51 @@ thus
 	\theta^{(j)} = \frac{n}{\sum_{j=1}^n \left[d_j y_j + (1 - d_j) \left( c + \frac{1}{\theta^{(j-1)}}\right)\right]}
 \end{equation*}
 }
+
+\textcolor{red}{
+(c) From the identity given, 
+\begin{equation*}
+	\frac{\partial^2 \log f(y ; \theta)}{\partial \theta \partial \theta^\top} = \frac{\partial^2 \log f(y, U ; \theta)}{\partial \theta\partial^\top} - \frac{\partial^2 \log f(U \mid y ; \theta)}{\partial\theta\partial\theta^\top}
+\end{equation*}
+Then conditioning on $Y =y$, the conditional expectation of $\partial^2\log f(y ; \theta) / \partial\theta\partial\theta^\top$ is constant, so 
+\begin{equation*}
+	-\frac{\partial^2 \log f(y ; \theta)}{\partial \theta \partial \theta^\top} = E_\theta \left[- \frac{\partial^2 \log f(y, U ; \theta)}{\partial \theta \partial \theta^\top} \mid Y = y \right] - E_\theta\left[-\frac{\partial^2 \log f(U \mid y; \theta)}{\partial \theta \partial \theta^\top} \mid Y = y\right]
+\end{equation*}
+}
+
+\textcolor{red}{
+(d) From (c), the missing information is defined as 
+\begin{equation*}
+	I_m(\theta ; y) = E_\theta \left[-\frac{\partial^2 \log f(U \mid y ; \theta)}{\partial \theta^2}\mid Y = y\right]
+\end{equation*}
+where 
+\begin{equation*}
+	f(u \mid y ; \theta) = \prod_{j=1}^k f(u_j \mid y_j, d_j ; \theta)
+\end{equation*}
+From part (a), if $d_j = 1$, 
+\begin{equation*}
+	\log f(u_j \mid y_j, 1 ; \theta) = \log \delta(u_j - y_j)
+\end{equation*}
+hence the derivatives with resepect to $\theta$ are $0$ in this case. For $d_j = 0$, 
+\begin{equation*}
+	\log f(u_j \mid y_j , 0 ; \theta) = \log f(u_j ; \theta) - \log(1 - F(c ; \theta)) = \log \theta - \theta u_j + \theta c
+\end{equation*}
+Taking derivatives twice gives 
+\begin{equation*}
+	\frac{\partial^2 \log f(u _j\mid y_j, 0 ; \theta)}{\partial\theta^2} = -\frac{1}{\theta^2}
+\end{equation*}
+So, the derivative is 
+\begin{equation*}
+	\frac{\partial^2 \log f(u_j \mid y_j, d_j; \theta)}{\partial\theta^2} = \begin{cases}
+		0 & d _j = 1\\
+		-\frac{1}{\theta^2} & d_j = 0
+	\end{cases} = \frac{1 - d_j}{\theta^2}
+\end{equation*}
+Then the missing information is 
+\begin{equation*}
+	I_m(\theta ; y) = \sum_{j=1}^k E_\theta \left[-\frac{\partial \log f(U_j \mid y_j, d_j; \theta)}{\partial \theta^2}\mid Y_j = y_j\right] = \sum_{j=1}^k \frac{1-d_j}{\theta^2}
+\end{equation*}
+}
 \end{enumerate}
 \end{document}
 
