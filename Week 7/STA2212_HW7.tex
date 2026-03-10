@@ -78,7 +78,7 @@
 	$$\displaystyle{\pr(R=1\mid\hat\mu) = \pr(Z > 0 \mid \hat\mu) = \Phi\left\{\frac{\gamma_0 + \gamma_1n^{1/2} + \rho n^{1/2}(\hat\mu-\mu)/\sigma)}{(1-\rho^2)^{1/2}}\right\}}.$$  
 	\item  Show that the estimate of $\mu$ is biased if $\rho>0$: \begin{align*}E(\hat\mu \mid R=1) &= \mu+\rho\sigma n^{-1/2}\zeta(\gamma_0+\gamma_1 n^{1/2}), %\mu+\rho\sigma\gamma_1\zeta'(\gamma_0)+\rho\sigma\zeta(\gamma_0)n^{-1/2}
 	\end{align*} where $\zeta(x) = \phi(x)/\Phi(x)$, and $\phi(\cdot), \Phi(\cdot)$ are the standard normal density and distribution function, respectively
-	\item For a collection of $k$ such studies, each producing estimate $\hat\mu_j \dotsim N(\mu, \sigma^2/n_j)$, derive the log-likelihood function given in Davison's eq.(5.34): $$ \ell(\mu,\rho, \sigma^2) = \sum_{j=1}^k \left\{-\frac{1}{2}\log\sigma^2 + \frac{n_j}{2\sigma^2}(\hat\mu-\mu)^2 - \log\Phi(a_j)+\log\Phi(b_j) \right\}, $$
+	\item For a collection of $k$ such studies, each producing estimate $\hat\mu_j \dotsim N(\mu, \sigma^2/n_j)$, derive the log-likelihood function given in Davison's eq.(5.34): $$ \ell(\mu,\rho, \sigma^2) = \sum_{j=1}^k \left\{-\frac{1}{2}\log\sigma^2 - \frac{n_j}{2\sigma^2}(\hat\mu-\mu)^2 - \log\Phi(a_j)+\log\Phi(b_j) \right\}, $$
 	where $a_j = \gamma_0+\gamma_1n_j^{1/2}$ and $ b_j = \left\{a_j+\rho n_j^{1/2}(\hat\mu_j-\mu)/\sigma\right\}(1-\rho^2)^{-1/2}$.
 	\item Verify that if $\rho=0$ that the maximum likelihood estimate of $\mu$ is $$\frac{\sum_{j=1}^k n_j\hat\mu_j}{\sum_{j=1}^k n_j}.$$
 \end{enumerate}
@@ -148,7 +148,7 @@ hence
 }
 
 \textcolor{red}{
-(c) Since we only observe the publisehd studies, the likelihood function is 
+(c) Since we only observe the published studies, the likelihood function is 
 \begin{align*}
 	\mathcal L(\mu, \rho, \sigma^2) &= \prod_{j=1}^k f(\hat \mu_j  \mid R_j = 1)\\
 	&= \prod_{j=1}^k \frac{f(\hat\mu_j) P(R_j = 1 \mid \mu_j)}{P(R_j = 1)}\\\

@@ -168,9 +168,9 @@ thus
 \begin{equation*}
     w = \begin{cases}
         0 & \bar x_1 \leq 0, \bar x_2\leq 0\\
-        \bar x_1^2 & \bar x_1 > 0, \bar x_2 \leq 0\\
-        \bar x_2^2 & \bar x_1 \leq 0, \bar x_2 > 0\\
-        \bar x_1^2 + \bar x_2 & \bar x_1 > 0, \bar x_2 > 0
+        n\bar x_1^2 & \bar x_1 > 0, \bar x_2 \leq 0\\
+        n\bar x_2^2 & \bar x_1 \leq 0, \bar x_2 > 0\\
+        n(\bar x_1^2 + \bar x_2^2) & \bar x_1 > 0, \bar x_2 > 0
     \end{cases}
 \end{equation*}
 Under the null, we have $(X_{1i}, X_{2i}) \sim \mathcal N_2(0, I_2)$, hence 
@@ -180,9 +180,9 @@ Under the null, we have $(X_{1i}, X_{2i}) \sim \mathcal N_2(0, I_2)$, hence
 Then 
 \begin{align*}
     P(w = 0) &= P(\bar X_1 \leq 0, \bar X_2 \leq 0) = \frac{1}{4}\\
-    P(w = \bar X_1^2) &= P(\bar X_1 > 0, \bar X_2 \leq 0) = \frac 14\\
-    P(w = \bar X_2^2) &= P(\bar X_1 \leq 0, \bar X_2 > 0) = \frac 14\\
-    P(w = \bar X_1^2 + \bar X_2^2) &= P(\bar X_1 > 0, \bar X_2 > 0) = \frac 14
+    P(w = n\bar X_1^2) &= P(\bar X_1 > 0, \bar X_2 \leq 0) = \frac 14\\
+    P(w = n\bar X_2^2) &= P(\bar X_1 \leq 0, \bar X_2 > 0) = \frac 14\\
+    P(w = n\bar X_1^2 + n\bar X_2^2) &= P(\bar X_1 > 0, \bar X_2 > 0) = \frac 14
 \end{align*}
 Then the distribution of $w$ under $H_0$ is 
 \begin{equation*}
